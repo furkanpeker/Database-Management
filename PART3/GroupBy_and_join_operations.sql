@@ -40,11 +40,75 @@ SELECT * from Orders AS O JOIN Customers AS C
 ON O.CustomerID = C.CustomerID 
 ORDER BY O.OrderDate DESC
 
-SELECT * from  Customers AS C JOIN Orders AS O 
+select * from  Customers AS C JOIN Orders AS O 
 ON O.CustomerID = C.CustomerID 
 ORDER BY O.OrderDate DESC
 
-/* LEFT OUTER JOIN */
+select O.ShipAddress SiparisAdress, E.FirstName CalisanAd, E.LastName CalisanSoyad 
+from Employees E join Orders O 
+on E.EmployeeID = o.EmployeeID 
+where year(O.OrderDate) = 1998 and MONTH(O.OrderDate)=3
+
+select C.ContactName MusterıAd, C.Phone telefon 
+from Orders O inner join Customers C
+on O.CustomerID = C.CustomerID 
+where year(O.OrderDate) = 1997
+
+select O.ShipCity SiparisSehri, C.ContactName MusteriAD 
+from Orders O join Customers C
+on O.CustomerID = C.CustomerID
+where O.Freight >= 40 
+order by O.ShipCity
+
+select O.OrderDate SiparisTarihi, O.ShipCity Sehir, Upper(E.FirstName + ' ' + E.LastName) [Isci Ad-Soyad]
+from Orders O join Employees E
+on O.EmployeeID = E.EmployeeID
+where year(O.OrderDate) = 1997
+
+select year(O.OrderDate) [Gec Kargolanan Siparisler Tarihi], C.ContactName [Musteri Ad-Soyad], E.FirstName + ' ' + E.LastName [Isci Ad-Soyad]
+from Orders O 
+join Customers C
+on O.CustomerID = C.CustomerID
+join Employees E
+on O.EmployeeID = E.EmployeeID
+
+select O.OrderDate SiparisTarihi, C.ContactName
+from Orders O join Customers C
+on O.CustomerID = C.CustomerID
+where O.RequiredDate < O.ShippedDate
+
+select P.ProductName UrunAdi, C.CategoryName KategoriAdi, Quantity UrunMiktarı
+from Products P
+join [Order Details] OD
+on P.ProductID = OD.ProductID
+join [Categories] C
+on P.CategoryID = C.CategoryID
+where OD.OrderID=10248
+
+select P.ProductName UrunAdi, S.CompanyName TedarikciAd, C.CategoryName KategoriAd
+from Products P
+join [Order Details] OD
+on P.ProductID = OD.ProductID
+join [Categories] C
+on P.CategoryID = C.CategoryID
+join Suppliers S
+on P.SupplierID = S.SupplierID
+where OD.OrderID=10248
+
+select P.ProductName UrunAdi, OD.Quantity Adet
+from [Order Details] OD
+join Products P on P.ProductID = OD.ProductID
+join Orders O on O.OrderID = OD.OrderID 
+where O.EmployeeID = 3 and year(O.OrderDate) = 1997
+
+/* Work on the bellow query! */
+select top E.EmployeeID CalisanID, E.FirstName Ad, E.LastName Soyad
+from Employees E join [Order Details] OD
+on E.EmployeeID = OD.EmloyeeID
+join Orders O on O.OrderId = OD.OrderID
+where (OD.UnitPrice * OD.Quantity) and year(O.OrderDate) = 1997
+/*LEFT OUTER JOIN */
+
 
 
 
