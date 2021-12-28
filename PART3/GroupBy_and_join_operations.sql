@@ -77,7 +77,7 @@ from Orders O join Customers C
 on O.CustomerID = C.CustomerID
 where O.RequiredDate < O.ShippedDate
 
-select P.ProductName UrunAdi, C.CategoryName KategoriAdi, Quantity UrunMiktarı
+select P.ProductName UrunAdi, C.CategoryName KategoriAdi, P.QuantityPerUnit UrunMiktarı
 from Products P
 join [Order Details] OD
 on P.ProductID = OD.ProductID
@@ -102,15 +102,69 @@ join Orders O on O.OrderID = OD.OrderID
 where O.EmployeeID = 3 and year(O.OrderDate) = 1997
 
 /* Work on the bellow query! */
-select top E.EmployeeID CalisanID, E.FirstName Ad, E.LastName Soyad
-from Employees E join [Order Details] OD
-on E.EmployeeID = OD.EmloyeeID
-join Orders O on O.OrderId = OD.OrderID
-where (OD.UnitPrice * OD.Quantity) and year(O.OrderDate) = 1997
-/*LEFT OUTER JOIN */
+
+select top 1 E.FirstName+' '+E.LastName [Employee Name]
+from Orders O join Employees E
+on O.EmployeeID = E.EmployeeID
+join [Order Details] OD
+on O.OrderID = OD.OrderID
+order by OD.Quantity desc	
 
 
+/*LEFT/RIGHT OUTER JOIN */
+SELECT * from Orders AS O LEFT JOIN Customers AS C 
+ON O.CustomerID = C.CustomerID 
+ORDER BY O.OrderDate DESC
 
+Select O.ShipAddress, E.FirstName + ' ' + E.LastName [Employee Name-Surname]
+from Orders O left join Employees E 
+on O.EmployeeID = E.EmployeeID
+where year(O.OrderDate) = 1998 and datepart(month, O.OrderDate) = 3
+
+select C.ContactName, C.Phone
+from Orders O
+Left Join Customers C
+on O.CustomerID = C.CustomerID
+where datepart(year, O.OrderDate) = 1997
+
+select O.ShipCity, C.ContactName
+from Orders O
+Left Join Customers C
+on O.CustomerID = C.CustomerID
+where Freight >= 40
+
+select year(O.OrderDate) OrderYear, C.ContactName, E.FirstName + ' ' + E.LastName EmployeeName
+from Orders O
+Right Join Customers C on O.CustomerID = C.CustomerID
+Right Join Employees E on O.EmployeeID = E.EmployeeID
+
+select O.OrderDate, C.ContactName
+from Orders O
+Right Join Customers C
+on O.CustomerID = C.CustomerID
+where O.RequiredDate > O.ShippedDate
+
+select P.ProductName [Urun Adi], C.CategoryName [Kategori Adi], OD.Quantity [Sipariste Satilan Urunlerin Adedi]
+from Products P
+Right Join Categories C
+on P.CategoryID = C.CategoryID
+Left Join [Order Details] OD
+on P.ProductID = OD.ProductID
+where OD.OrderID = 10248
+
+select P.ProductName [Urun Adi], S.CompanyName [Tedarikci Adi]
+from Products P
+Right Join Suppliers S
+on P.SupplierID = S.SupplierID
+Left Join [Order Details] OD
+on P.ProductID = OD.ProductID
+where OD.OrderID = 10248	
+
+select P.ProductName, OD.Quantity
+from [Order Details] OD
+Left Join Orders O on OD.OrderID = O.OrderID
+Right Join Products P on P.ProductID = OD.ProductID
+where O.EmployeeID = 3 and year(O.OrderDate) = 1997
 
 
 
