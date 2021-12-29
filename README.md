@@ -1,2 +1,2 @@
-This repo has created to add works about DBMS into it.
+This repo covers the works about Database Management.
 
